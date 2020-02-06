@@ -1,1 +1,1 @@
-# MATH_3333_YorkU
+# MATH-3333-YorkU
