@@ -1,1 +1,1 @@
-# MATH-3333-YorkU
+MATH-3333-Data-Analytics-YorkU
