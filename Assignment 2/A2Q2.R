@@ -23,23 +23,36 @@ update.est.model <- function(sales, advert){
   error.now = -2*error*c(1, advert)
   
   # recompute our coefficients with a learning rate of 0.0001
-  theta0 = theta0 + 0.0001 * error.now[1]
-  theta1 = theta1 + 0.0001 * error.now[2]
+  theta0 <<- theta0 - 0.0001 * error.now[1]
+  theta1 <<- theta1 - 0.0001 * error.now[2]
 }
 
 update.est.model(154, 61)
 update.est.model(157, 63)
 
-
 # b) Based on the original 9 observation data and perform a ridge regression. Program it
-# with R. Output the ridge regression results at a few different values of ??.
+# with R. Output the ridge regression results at a few different values of λ.
 
 # to create our ridge regression, we can modify the least square solution to consider the weighted
-# factor. Thus we compute ?? = ((XtX + ??I)???1)XTY.
+# factor. Thus we compute θ = ((XtX + λI)-1)XTY.
 
 LI = diag(2)*0.0001
 ridge = solve((t(X)%*%X) + LI)%*%(t(X)%*%Y)
 ridge
 
-# c) In your ridge regression, when ?? increaes, what do you observe from the values of the estimated 
+# c) In your ridge regression, when λ increaes, what do you observe from the values of the estimated 
 # coefficients. Does any of the estimated coefficients shrink to zero like the L1 LASSO regression?
+
+LI = diag(2)*0.1
+ridge = solve((t(X)%*%X) + LI)%*%(t(X)%*%Y)
+ridge
+
+LI = diag(2)*1
+ridge = solve((t(X)%*%X) + LI)%*%(t(X)%*%Y)
+ridge
+
+LI = diag(2)*10
+ridge = solve((t(X)%*%X) + LI)%*%(t(X)%*%Y)
+ridge
+
+# Yes, we slowly begin to see our value for the coefficient theta0 shinks to 0
