@@ -10,9 +10,9 @@ library(lars)
 day <- read.csv("C:/Users/Rahul/Downloads/Bike-Sharing-Dataset/day.csv")
 
 # a) Use the LASSO package to analyze the data with a collection of predictors and provide
-# the summary of the output of the command “lars”.
+# the summary of the output of the command "lars".
 
-# b) Based on the output of “lars”, please provide the sequence of candidate models.
+# b) Based on the output of "lars", please provide the sequence of candidate models.
 
 y <- day$registered
 drop <- c("registered", "dteday")
