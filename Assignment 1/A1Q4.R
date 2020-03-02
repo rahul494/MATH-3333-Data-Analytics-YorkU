@@ -28,7 +28,8 @@ sse = 0
 for(i in 1:nrow(day.2half)) {
   sse = sse + (day.2half$registered[i] - predict(day.2half$temp[i], day.2half$hum[i]))^2
 }
-print(sse)
+
+sse
  
 # c) Repeat part (a) and part (b) using the regression model you proposed in Question 2.b.
 
