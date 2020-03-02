@@ -45,4 +45,4 @@ for(i in 1:nrow(day.2half)) {
   sse = sse + (day.2half$registered[i] - predict(day.2half$temp[i], day.2half$hum[i]))^2
 }
 
-print(sse)
+sse
