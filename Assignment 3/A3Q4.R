@@ -9,15 +9,19 @@ library(MASS)
 
 credit <- read.csv("C:/Users/Rahul/Downloads/credit.csv")
 
-# use 80% of the dataset to be used for training
-sample_size = round(nrow(credit)*.80)
-index <- sample(seq_len(nrow(credit)), size = sample_size)
+n =1000 # number of rows
+nt=800 # number of rows to be used for training
+neval=n-nt # remaining rows used for testing
+rep=5 # repeat cross-validation 5 times
+errlin=dim(rep)
 
-credit.train <- credit[index, ]
-credit.test <- credit[-index, ]
-ynew <- credit$credit.rating[-index]
+# find the misclasification for each fold in order to find the average misclassication error.
+for (k in 1:rep) {
+  train=sample(1:n,nt)
+  m1=lda(credit.rating~.,credit[train,])
+  predict(m1,credit[-train,])$class
+  tablin=table(credit$credit.rating[-train],predict(m1,credit[-train,])$class)
+  errlin[k]=(neval-sum(diag(tablin)))/neval
+}
 
-cred.lda = lda(credit.rating ~., data=credit.train)
-cred.lda
-
-predict(cred.lda,newdata=credit.test)
+mean(errlin)
