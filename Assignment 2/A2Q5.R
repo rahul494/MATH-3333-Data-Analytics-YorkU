@@ -11,21 +11,45 @@
 
 credit <- read.csv("C:/Users/Rahul/Downloads/credit.csv")
 
-# use 90% of the dataset to be used for training
-sample_size = round(nrow(credit)*.90)
-index <- sample(seq_len(nrow(credit)), size = sample_size)
+# create factors for qualitative variables
 
-credit.train <- credit[index, ]
-credit.test <- credit[-index, ]
-ynew <- credit$credit.rating[-index]
+credit$credit.rating <- as.factor(credit$credit.rating)
+credit$account.balance <- as.factor(credit$account.balance)
+credit$previous.credit.payment.status <- as.factor(credit$previous.credit.payment.status)
+credit$credit.purpose <- as.factor(credit$credit.purpose)
+credit$savings <- as.factor(credit$savings)
+credit$employment.duration <- as.factor(credit$employment.duration)
+credit$marital.status <- as.factor(credit$marital.status)
+credit$guarantor <- as.factor(credit$guarantor)
+credit$current.assets <- as.factor(credit$current.assets)
+credit$other.credits <- as.factor(credit$other.credits)
+credit$apartment.type <- as.factor(credit$apartment.type)
+credit$occupation <- as.factor(credit$occupation)
+credit$foreign.worker <- as.factor(credit$foreign.worker)
 
-cred.glm = glm(credit.rating ~., family=binomial, data=credit.train)
+# drop the variables that are not significant 
+# this includes telephone and dependents
+
+credit <- subset(credit, select=-c(telephone, dependents))
+
+Xcred <- model.matrix(credit.rating~., data = credit)[,-1]
+train <- sample(1:1000, 900)
+xtrain <- Xcred[train,]
+xtest <- Xcred[-train,]
+ytrain <- credit$credit.rating[train]
+ytest <- credit$credit.rating[-train]
+
+train.frame <- data.frame(ytrain, xtrain)
+test.frame <- data.frame(ytest, xtest)
+
+cred.glm = glm(ytrain~., family = binomial, data = data.frame(ytrain, xtrain))
+
 summary(cred.glm)
 
-ptest <- predict(cred.glm, newdata = credit.test, type="response")
-data.frame(ynew, ptest)
+ptest <- predict(cred.glm, newdata = test.frame, type="response")
+data.frame(test.frame$ytest, ptest)
 gg1 = floor(ptest + (5/6))
-ttt = table(ynew, gg1)
+ttt = table(test.frame$ytest, gg1)
 ttt
 error = (ttt[1,2] + ttt[2,1])/100
 error
