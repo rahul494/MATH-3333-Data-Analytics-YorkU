@@ -62,3 +62,8 @@ ttt = table(ynew, gg1)
 ttt
 error = (ttt[1,2] + ttt[2,1])/100
 error
+
+# The number of false positive and false negative will change with respect to the cutoff
+# probability. When the cutoff probability increases, it is harder to classify Y to be 1, thus there
+# will be less false positives but more false negatives. When the cutoff value decreases, it is easier
+# to classify Y to be 1, thus there will be more false positives but less false negatives. 
